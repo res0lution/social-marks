@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block title %}Log in{% endblock title %}
+
+{% block content %}
+  <h1>Log in</h1>
+  <p>Please, fill the form to log in</p>
+  <p>
+    Don`t have account?
+    <a href="{% url 'register' %}">register here</a>
+  </p>
+
+  <form action="." method="post" class="form">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+
+    <input type="hidden" name="next" value="{{ next }}"/>
+    
+    {% buttons %}
+      <button type="submit" class="btn btn-primary">
+        Submit
+      </button>
+    {% endbuttons %}
+  </form>
+
+  <a href="{% url 'password_reset' %}">
+    Forgotten your password?
+  </a>
+
+  <a class="btn btn-danger" href="{% url 'social:begin' 'google-oauth2' %}">
+    Login with google
+  </a>
+  
+{% endblock content %}
