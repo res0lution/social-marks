@@ -28,7 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'mysite.com',
     'localhost',
-    '127.0.0.1'
+    '127.0.0.1',
+    'bc63cffd.ngrok.io'
 ]
 
 
@@ -43,7 +44,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap4',
-    'social_django'
+    'social_django',
+    'images.apps.ImagesConfig',
+    'sorl.thumbnail',
+    'actions.apps.ActionsConfig'
 ]
 
 MIDDLEWARE = [
@@ -152,3 +156,12 @@ AUTHENTICATION_BACKENDS = [
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'key'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'secret'
+
+from django.urls import reverse_lazy
+
+ABSOLUTE_URL_OVERRIDES = {
+    'auth.user': lambda u: reverse_lazy(
+        'user_detail',
+        args=[u.username]
+    )
+}

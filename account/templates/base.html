@@ -21,13 +21,15 @@
               My dashboard
             </a>
           </li>
+          
           <li>
-            <a href="#">
+            <a href="{% url 'images:list' %}">
               Images
             </a>
           </li>
+
           <li>
-            <a href="#">
+            <a href="{% url 'user_list' %}">
               People
             </a>
           </li>
@@ -44,21 +46,32 @@
       </span>
     </header>
 
-    {% if messages %}
-      <ul>
-        {% for message in messages %}
-          <li class="{{message.tags}}">
-            {{message|safe}}
-            <a href="#">x</a>
-          </li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-
     <main>
       {% block content %}
       {% endblock content %}
     </main>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+    <script>
+        var csrftoken = Cookies.get('csrftoken');
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+        $(document).ready(function(){
+            {% block domready %}
+            {% endblock %}
+		});
+    </script>
   </body>
 </html>
 
