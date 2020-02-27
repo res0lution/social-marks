@@ -1,20 +1,20 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load bootstrap4 %}
 
-{% block title %}Social-mark an image{% endblock title %}
+{% block title %}Bookmark an image{% endblock %}
 
 {% block content %}
-  <h1>Social-mark an image</h1>
-  <img src="{{ request.GET.url }}" />
+  <h1>Bookmark an image</h1>
+  
+  <img src="{{ request.GET.url }}" class="image-preview">
 
-  <form action="." method="post" >
-    {% csrf_token %}
+  <form action="." method="post">
     {% bootstrap_form form %}
+    {% csrf_token %}
     
-    {% buttons %}
-      <button type="submit" class="btn btn-primary">
-        Save it
-      </button>
-    {% endbuttons %}
+    <button type="submit" class="btn btn-danger">
+      <i class="far fa-save"></i>
+      Save
+    </button>
   </form>
-{% endblock content %}
+{% endblock %}

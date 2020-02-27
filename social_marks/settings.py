@@ -29,7 +29,7 @@ ALLOWED_HOSTS = [
     'mysite.com',
     'localhost',
     '127.0.0.1',
-    'bc63cffd.ngrok.io'
+    '6acae5e7.ngrok.io'
 ]
 
 
@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'social_django',
     'images.apps.ImagesConfig',
     'sorl.thumbnail',
-    'actions.apps.ActionsConfig'
+    'actions.apps.ActionsConfig',
+    'redis'
 ]
 
 MIDDLEWARE = [
@@ -165,3 +166,7 @@ ABSOLUTE_URL_OVERRIDES = {
         args=[u.username]
     )
 }
+
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 0

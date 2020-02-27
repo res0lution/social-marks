@@ -1,26 +1,26 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load thumbnail %}
 
-{% block title %}People{% endblock title %}
+{% block title %}People{% endblock %}
 
 {% block content %}
-  <h1>People</h1>
+  <h1 class="text-center m-3">People</h1>
 
-  <div>
+  <div id="people-list" class="d-flex flex-wrap">
     {% for user in users %}
-      <div>
+      <div class="user m-1 d-flex flex-column align-items-center">
         <a href="{{ user.get_absolute_url }}">
           {% thumbnail user.profile.photo "180x180" crop="100%" as im %}
-            <img src="{{im.url}}">
+            <img class="rounded-circle" src="{{ im.url }}">
           {% endthumbnail %}
         </a>
-
-        <div>
-          <a href="{{ user.get_absolute_url }}">
-            {{ user.get_full_name}}
+        
+        <div class="info">
+          <a href="{{ user.get_absolute_url }}" class="title">
+            {{ user.get_full_name }}
           </a>
         </div>
       </div>
     {% endfor %}
   </div>
-{% endblock content %}
+{% endblock %}

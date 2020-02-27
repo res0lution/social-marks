@@ -1,39 +1,55 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends "base.html" %}
 
-{% block title %}Dashboard{% endblock title %}
+{% block title %}Dashboard{% endblock %}
 
 {% block content %}
-  <h1>Dashboard</h1>
+  <h1 class="text-center mt-2">Dashboard</h1>
 
-  {% with request.user.images_created.count as total_images_created%}
-    <p>
-      Welcome to your dashboard. 
-      You have marked {{total_images_created}} image
-    </p>
-  {% endwith %}
+  <div class="row mb-2">
+    <div class="col-3 border rounded border-danger p-3">
+      {% with total_images_created=request.user.images_created.count %}
+        <h5 class="text-center">
+          Welcome to your dashboard.
+          You have marked 
+          <span class="badge badge-danger">{{ total_images_created }}</span> 
+          image{{ total_images_created|pluralize }}.
+        </h5>
+      {% endwith %}
 
-  <p>
-    Drag the following button to your socialmarks toolbar to
-    mark images from other websites --> 
-    <a 
-      href="javascript:{% include 'bookmarklet_launcher.js' %}"
-      class="btn btn-primary"
-    >Mark it</a>
-  </p>
+      <p>
+        Drag the following button to your bookmarks toolbar to bookmark images 
+        from other websites → 
+        <a 
+          href="javascript:{% include "socialmarks_launcher.js" %}"
+          class="btn btn-danger"
+        >
+          <i class="far fa-images"></i>
+          Social-mark it
+        </a>
+      <p>
 
-  <p>
-    You can also
-    <a href="{% url 'edit' %}">edit your profile</a>
-    or
-    <a href="{% url 'password_change' %}">change your password</a>
-  </p>
+      <p>You can also:<p>
 
-  <h2>What`s happennig</h2>
+      <a class="btn btn-sm btn-danger" href="{% url "edit" %}">
+        <i class="fas fa-cogs"></i>
+        Edit your profile
+      </a>
 
-  <div>
-    {% for action in actions %}
-      {% include 'actions/action/detail.html' %}
-    {% endfor %}
+      <a class="btn btn-sm btn-danger mt-2" href="{% url "password_change" %}">
+        <i class="fas fa-unlock-alt"></i>
+        Change your password
+      </a>.
+    </div>
+
+    <div 
+      class="col-9 d-flex border rounded border-danger align-items-center flex-column" 
+      id="action-list"
+    >
+      <h2 class="text-center m-3">What's happening</h2>
+
+      {% for action in actions %}
+        {% include "actions/action/detail.html" %}
+      {% endfor %}
+    </div>
   </div>
-{% endblock content %}
+{% endblock %}

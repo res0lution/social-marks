@@ -1,77 +1,119 @@
 {% load static %}
 {% load bootstrap4 %}
 
-<!Doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>{% block title %}{% endblock title %}</title>
-    {% bootstrap_css %}
-    {% bootstrap_javascript jquery='full' %}
-    {% bootstrap_messages %}
-  </head>
+<head>
+  <title>{% block title %}{% endblock %}</title>
 
-  <body>
-    <header>
-      <span>Social marks</span>
+  <link href="{% static "css/base.css" %}" rel="stylesheet">
+  {% bootstrap_css %}
+  {% bootstrap_javascript jquery='slim' %}
 
-      {% if request.user.is_authenticated %}
-        <ul>
-          <li>
-            <a href="{% url 'dashboard' %}">
-              My dashboard
-            </a>
-          </li>
-          
-          <li>
-            <a href="{% url 'images:list' %}">
-              Images
-            </a>
-          </li>
+  <meta 
+    name="viewport" 
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  >
+  <script 
+    src="https://kit.fontawesome.com/499381f5fe.js" 
+    crossorigin="anonymous"
+  ></script>
+</head>
 
-          <li>
-            <a href="{% url 'user_list' %}">
-              People
-            </a>
-          </li>
-        </ul>
-      {% endif %}
+{% bootstrap_messages %}
 
-      <span>
+<body>
+  <header id="header">
+    <nav class="navbar navbar-expand-lg navbar-danger bg-danger shadow">
+      <button 
+        class="navbar-toggler" 
+        type="button" 
+        data-toggle="collapse" 
+        data-target="#navbarTogglerDemo03" 
+        aria-controls="navbarTogglerDemo03" 
+        aria-expanded="false" 
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <a class="navbar-brand text-white link--hover" href="#">
+        <i class="far fa-images"></i>
+        Social-marks
+      </a>
+
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
         {% if request.user.is_authenticated %}
-          Hello {{request.user.first_name}},
-          <a href="{% url 'logout' %}">Logout</a>
-        {% else %}
-          <a href="{% url 'login' %}">Log in</a>
+          <ul class="menu navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item {% if section == "dashboard" %}selected{% endif %}">
+              <a class="nav-link text-white link--hover" href="{% url "dashboard" %}">
+                <i class="fas fa-home"></i>
+                My dashboard
+              </a>
+            </li>
+
+            <li class="nav-item {% if section == "images" %}selected{% endif %}">
+              <a class="nav-link text-white link--hover" href="{% url "images:list" %}">
+                <i class="far fa-file-image"></i>
+                Images
+              </a>
+            </li>
+
+            <li class="nav-item {% if section == "people" %}selected{% endif %}">
+              <a class="nav-link text-white link--hover" href="{% url "user_list" %}">
+                <i class="fas fa-users"></i>
+                People
+              </a>
+            </li>
+          </ul>
         {% endif %}
-      </span>
-    </header>
 
-    <main>
-      {% block content %}
-      {% endblock content %}
-    </main>
+        <span class="user text-white d-flex align-items-center">
+          {% if request.user.is_authenticated %}
+            Hello {{ request.user.first_name }},
+            <a class="nav-link text-white link--hover" href="{% url "logout" %}">
+              <i class="fas fa-sign-out-alt"></i>
+              Logout
+            </a>
+          {% else %}
+            <a class="nav-link text-white link--hover" href="{% url "login" %}">
+              <i class="fas fa-sign-in-alt"></i>
+              Log-in
+            </a>
+          {% endif %}
+        </span>
+      </div>
+    </nav>
+  </header>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
-    <script>
-        var csrftoken = Cookies.get('csrftoken');
-        function csrfSafeMethod(method) {
-            // these HTTP methods do not require CSRF protection
-            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+  <main class="container" id="content">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+  <script>
+    const csrftoken = Cookies.get("csrftoken")
+
+    const csrfSafeMethod = method => {
+      return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method))
+    }
+
+    $.ajaxSetup({
+      beforeSend: (xhr, settings) => {
+
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
         }
-        $.ajaxSetup({
-            beforeSend: function(xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                }
-            }
-        });
 
-        $(document).ready(function(){
-            {% block domready %}
-            {% endblock %}
-		});
-    </script>
+      }
+    })
+
+    $(document).ready(() => {
+      {% block domready %}
+      {% endblock %}
+    })
+  </script>
   </body>
 </html>
-

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block title %}Log-in{% endblock %}
+
+{% block content %}
+  <h1>Log-in</h1>
+
+  <p>Please, use the following form to log-in:</p>
+
+  <form action="." method="post">
+    {% bootstrap_form form %}
+    {% csrf_token %}
+    
+    <button type="submit" class="btn btn-danger">
+      <i class="fas fa-sign-in-alt"></i>
+      Log in
+    </button>
+  </form>
+{% endblock %}
